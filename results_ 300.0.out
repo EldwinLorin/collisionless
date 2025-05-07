@@ -1,0 +1,9 @@
+Results for T=                                       300.0000000
+k(T)=                                              6.7113202E-11
+kprod(T)=                                          6.7108689E-11
+kCCH2(T)=                                          4.0885952E-11
+kHCCH(T)=                                          2.6222737E-11
+kback(T)=                                          4.5133809E-15
+Branching ratio for products=                          0.9999327
+Branching ratio for backdissociation=                  0.0000673
+Final entrance TS partition function value=        7.0860371E+04

@@ -1,0 +1,15 @@
+79900., 10.     		!Emax, DeltaE
+60,1			! Jmax, DeltaJ
+300. 0.660E+28	! T, fragments partition function (cm-3)
+'kcal'   !Energy unit. Is not actually read because kcal/mol is the only supported units
+2        !Number of products
+0.0      !Energy of products
+-75.90
+
+4			!Number of TS
+'entCCH2_60.dat',  0    !DOS file and TS energy. To generalize, connectivity to products and some well connectivity needs to be implemented somehow.
+'outHCCH_60.dat', -75.90
+'TS3_60.dat', -162.73
+'outCCH2_60.dat', -75.90
+
+
