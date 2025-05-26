@@ -1,0 +1,9 @@
+Usage:
+Just compile with any fortran compiler, nothing needed
+run it with input file named 'collisionless.inp'
+Example input file is mostly self-explanatory
+DOS files: first column : energy, J next colums: N(E,J) sum of states
+DOS files were obtained with Variflex for loose TSs using VRCTST. For tight, densum was used for vibrational sum of states and subsequently convoluted for J.
+
+Result files: kJ contains the contribution for each J value to each channel and to the overall rate constant
+Results contain general T resolved results, all_k contains the same without text to be read by other scripts

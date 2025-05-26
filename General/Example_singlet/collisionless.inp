@@ -1,0 +1,19 @@
+79900., 10.     		!Emax, DeltaE
+80,1			! Jmax, DeltaJ
+273. 0.497E+28 	! T, fragments partition function (cm-3)
+'kcal'   !Energy unit. Is not actually read because kcal/mol is the only supported unit
+1,2,2        !Number of products
+0.0, 2  !energy of reactant (1st product) and rot symmetry number
+-71.16
+
+2  !rotational symmetry number of well 1
+2  !rotational symmetry number of well 2
+
+5			!Number of TS
+'entCCH2_80.dat',  0, 1, 2,2   !DOS file and TS energy. Index of species connected by the TS (1st < 2nd) and rot symmetry number
+'outHCCH_80.dat', -71.16, 3, 5,1   !For example, this TS connects specie 3 (so 2nd intermediate, HCCH) with specie 5 (so 2nd product H + CCH)
+'TS1_80.dat', -156.37, 2, 3,1
+'outCCH2_80.dat', -71.16, 2, 5,1  
+'entCCH2_80.dat',  0, 2, 4,2
+
+

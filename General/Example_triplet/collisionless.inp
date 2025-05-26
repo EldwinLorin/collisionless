@@ -1,0 +1,18 @@
+79900., 10.     		!Emax, DeltaE
+80,1			! Jmax, DeltaJ
+70. 0.834E+26 	! T, fragments partition function (cm-3)
+'kcal'   !Energy unit. Is not actually read because kcal/mol is the only supported units
+1,3,2        !Number of products
+0.0, 2
+-71.16
+2
+2
+2
+5			!Number of TS
+'ent3CCH2_80.dat',  0, 1, 2, 2   !DOS file and TS energy. Index of species connected by the TS (1st < 2nd)
+'TS2_80.dat', -65.82, 2, 3, 1
+'TS3_80.dat', -103.21, 3, 4, 1
+'TS4_80.dat', -68.83, 4, 6, 1
+'ent3CCH2_80.dat',  0, 2, 5, 2
+
+
