@@ -1,4 +1,4 @@
-Code to solve Master Equation in the collisionless case
+Code to solve Master Equation in the collisionless case. One needs to provide sum of state files for the TS along with information on energies, connectivity, symmetry.
 
 Usage:
 Compile with a fortran compiler and the LAPACK library:
