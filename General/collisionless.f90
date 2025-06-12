@@ -209,6 +209,9 @@ E_independant_factor=kb*T/(Qfrag*h)
                     A(fr,fr)=A(fr,fr)-sumstates(l,i,j)*rho(fr)/rho_TS(l)
                 end if
             end do
+            if ((i.eq.7800).and. (j.eq.70)) then
+                write(*,*) B
+            end if
 
                 X = B
                 call DGESV(nwell, 1, A, nwell, ipiv, X, nwell, info) !Solve linear system
