@@ -9,8 +9,8 @@ program collisionless
     character(len=50) :: fmtstr
 
 
-real(kind=8) Emax, DeltaE, T, Qfrag, kb, integral_cap, h, k_cap, qts, E_independant_factor,&
- kcal_to_invcm,sm_integral_prod,kTJ
+real(kind=16) Emax, DeltaE, T, Qfrag, kb, integral_cap, h, k_cap, qts, E_independant_factor,&
+ kcal_to_invcm,sm_integral_prod,kTJ, sum_entrance_TS,f_func
 
 integer, Allocatable ::  angularmomentum(:), lines_to_add(:), ipiv(:), from(:), to(:),&
 rho(:),rho_ts(:)
@@ -19,13 +19,13 @@ rho(:),rho_ts(:)
 character(len=30), Allocatable ::  ts_dos(:)
 character(len=100) :: filename_kJ, filename_results, filename_allk
 
-real(kind=8), Allocatable ::  product_energy(:), ts_energy(:), energy(:),&
+real(kind=16), Allocatable ::  product_energy(:), ts_energy(:), energy(:),&
 sm_integral_cap,kTJ_CCH2(:),kTJ_HCCH(:),k_prod(:),&
 A(:,:), B(:), X(:), integral_prod(:), ktJ_prod(:)
-real(kind=8), Allocatable :: Energybin(:,:)
+real(kind=16), Allocatable :: Energybin(:,:)
 real, Allocatable :: sumstates(:,:,:)
 
-real(kind=8) min_E,min_prod,min_TS!Those variables are used to determine lowest energy value
+real(kind=16) min_E,min_prod,min_TS!Those variables are used to determine lowest energy value
 
 !Conversion factor
 kcal_to_invcm=349.757
@@ -179,6 +179,13 @@ write(fmtstr,'("(I5,",I0,"(1PE15.5))")') nchan + 1 !Some formating for later
 k_prod=0
 Qts=0
 E_independant_factor=kb*T/(Qfrag*h)
+
+        sum_entrance_TS=0
+do j=1, nJ
+    do i = 1, nbins
+        sum_entrance_TS=sum_entrance_TS+(2*J+1)*(sumstates(1,i,j)*deltaE*exp(-energy(i)/(kb*T)))
+    end do
+end do
     do j=1, nJ
         ktJ=0
         ktJ_prod=0
@@ -190,6 +197,7 @@ E_independant_factor=kb*T/(Qfrag*h)
             A=0
             B=0
             X=0
+            f_func=(2*j+1)*sumstates(1,i,j)*exp(-energy(i)/(kb*T))/sum_entrance_TS
             do l=1, nTS  !Building matrix
                 if ((from(l) .gt. nreact .and. from(l) .le. nreact + nwell) .and. &
                 (to(l) .gt. nreact .and. to(l) .le. nreact + nwell)) then
@@ -203,19 +211,14 @@ E_independant_factor=kb*T/(Qfrag*h)
                     A(too,too)=A(too,too)-A(fr,too)
                 else if (from(l) .le. nreact) then
                     too=to(l)-nreact
-                    B(too)=B(too)-sumstates(l,i,j)*rho_int/rho_TS(l)
+                    B(too)=B(too)-(f_func*rho_int/rho_TS(l))
                 else if(to(l) .gt.nreact+nwell) then                   
                     fr=from(l)-nreact
                     A(fr,fr)=A(fr,fr)-sumstates(l,i,j)*rho(fr)/rho_TS(l)
                 end if
             end do
-            if ((i.eq.7800).and. (j.eq.70)) then
-                write(*,*) B
-            end if
-
                 X = B
                 call DGESV(nwell, 1, A, nwell, ipiv, X, nwell, info) !Solve linear system
-
 
             nchan=0
             !Compute k_cap(E,J)
@@ -231,7 +234,6 @@ E_independant_factor=kb*T/(Qfrag*h)
                     integral_prod(nchan)=integral_prod(nchan)+sm_integral_prod  !Sum over E
                 end if
             end do
-
         end if
         end do
 
@@ -252,11 +254,11 @@ end do
 write(200,'(A, T50, F15.7)') 'Results for T=', T
 write(200,'(A, T50, 1PE15.7)') 'k_capture(T)=', k_cap
 do i = 1, nchan
-    write(200,'(A,I0,A, T50, 1PE15.7)') 'kprod_', i, '(T)=', k_prod(i)
+    write(200,'(A,I0,A, T50, 1PE15.7)') 'kprod_', i, '(T)=', (k_prod(i)/sum(k_prod))*k_cap
 end do
 
 do i = 1, nchan
-write(200,'(A,I0,A, T50, F15.7)') 'Branching ratio for products_',i,'=', k_prod(i)/k_cap
+write(200,'(A,I0,A, T50, F15.7)') 'Branching ratio for products_',i,'=', k_prod(i)/sum(k_prod)
 end do
 write(200,'(A, T50, 1PE15.7)') 'TS partition function=', Qts
 
