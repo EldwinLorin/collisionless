@@ -1,7 +1,14 @@
 Usage:
-Compile with a fortran compiler and the LAPACK library:
+Compile with a fortran compiler and the quadruple-LAPACK subroutines in dgesv_quad
 
-gfortran -o collisionless collisionless.f90 -llapack
+1) Compile LAPACK sources in dgesv_quad (should not be necessary, object files are already provided)
+gfortran -c -O2 -fdefault-real-16 *.f
+2) Compile the code in the main General folder
+gfortran -c -O2 -fdefault-real-16 collisionless.f90
+3) Link together
+gfortran -o collisionless collisionless.o dgesv_quad/*.o
+
+
 
 run it with input file named 'collisionless.inp'
 Example input file is mostly self-explanatory
