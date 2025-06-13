@@ -266,10 +266,10 @@ write(200,'(A, T50, 1PE15.7)') 'TS partition function=', Qts
 write(300,'(F15.7)') T
 write(300,'(1PE15.7)') k_cap
 do i = 1, nchan
-    write(300,'(1PE15.7)') k_prod(i)
+    write(300,'(1PE15.7)') (k_prod(i)/sum(k_prod))*k_cap
 end do
 do i = 1, nchan
-write(300,'(F15.7)') k_prod(i)/k_cap
+write(300,'(F15.7)') k_prod(i)/sum(k_prod)
 end do
 write(300,'(1PE15.7)') Qts
 
